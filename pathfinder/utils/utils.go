@@ -1,6 +1,6 @@
 package utils
 
-import "github.com/b5710546232/pathfinder/pathfinder/model"
+import "github.com/b5710546232/go-pathfinder/pathfinder/model"
 
 func ReconstructPath(rows int, cols int, current model.Node, start model.Node, parents []int) []model.PathNode {
 	path := make([]model.PathNode, 0, rows*cols)

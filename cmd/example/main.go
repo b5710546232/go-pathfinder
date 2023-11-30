@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/b5710546232/pathfinder/pathfinder"
-	"github.com/b5710546232/pathfinder/pathfinder/directions"
-	"github.com/b5710546232/pathfinder/pathfinder/heuristics"
-	"github.com/b5710546232/pathfinder/pathfinder/model"
+	"github.com/b5710546232/go-pathfinder/pathfinder"
+	"github.com/b5710546232/go-pathfinder/pathfinder/directions"
+	"github.com/b5710546232/go-pathfinder/pathfinder/heuristics"
+	"github.com/b5710546232/go-pathfinder/pathfinder/model"
 )
 
 func main() {

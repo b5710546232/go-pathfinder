@@ -1,6 +1,6 @@
 package collections
 
-import "github.com/b5710546232/pathfinder/pathfinder/model"
+import "github.com/b5710546232/go-pathfinder/pathfinder/model"
 
 type Item struct {
 	value    model.Node

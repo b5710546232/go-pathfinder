@@ -3,11 +3,11 @@ package pathfinder
 import (
 	"math"
 
-	"github.com/b5710546232/pathfinder/internal/collections"
-	"github.com/b5710546232/pathfinder/pathfinder/directions"
-	"github.com/b5710546232/pathfinder/pathfinder/heuristics"
-	"github.com/b5710546232/pathfinder/pathfinder/model"
-	"github.com/b5710546232/pathfinder/pathfinder/utils"
+	"github.com/b5710546232/go-pathfinder/internal/collections"
+	"github.com/b5710546232/go-pathfinder/pathfinder/directions"
+	"github.com/b5710546232/go-pathfinder/pathfinder/heuristics"
+	"github.com/b5710546232/go-pathfinder/pathfinder/model"
+	"github.com/b5710546232/go-pathfinder/pathfinder/utils"
 )
 
 type AStarPathFinder struct {

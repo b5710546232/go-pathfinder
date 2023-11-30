@@ -1,19 +1,23 @@
 package utils
 
-import "github.com/b5710546232/go-pathfinder/pathfinder/model"
+import (
+	"github.com/b5710546232/go-pathfinder/pathfinder/model"
+)
 
-func ReconstructPath(rows int, cols int, current model.Node, start model.Node, parents []int) []model.PathNode {
-	path := make([]model.PathNode, 0, rows*cols)
+func ReconstructPath(rows int, cols int, current model.Node, start model.Node, parents []int, result []model.PathNode) []model.PathNode {
+	i := 0
 	for current.X != start.X || current.Y != start.Y {
 		c := model.PathNode{X: current.X, Y: current.Y}
-		path = append(path, c)
+		result[i] = c
 		current = model.Node{X: parents[current.Y*cols+current.X] % cols, Y: parents[current.Y*cols+current.X] / cols}
+		i++
 	}
-	path = append(path, model.PathNode{X: start.X, Y: start.Y})
+	result[i] = model.PathNode{X: start.X, Y: start.Y}
+	i++
+	path := result[:i]
 	for i := 0; i < len(path)/2; i++ {
 		path[i], path[len(path)-i-1] = path[len(path)-i-1], path[i]
 	}
-
 	return path
 }
 

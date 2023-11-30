@@ -14,6 +14,11 @@ type AStarPathFinder struct {
 	heuristicFunc heuristics.Heuristic
 	dirs          []directions.Direction
 	grid          [][]model.Node
+	parents       []int
+	visited       []bool
+	gScore        []float64
+	pq            collections.MinHeap
+	result        []model.PathNode
 }
 
 func NewAStarPathFinder(options ...func(*AStarPathFinder)) *AStarPathFinder {
@@ -30,32 +35,53 @@ func NewAStarPathFinder(options ...func(*AStarPathFinder)) *AStarPathFinder {
 }
 
 func WithHeuristicFunc(heuristic heuristics.Heuristic) func(*AStarPathFinder) {
-	return func(svr *AStarPathFinder) {
-		svr.heuristicFunc = heuristic
+	return func(p *AStarPathFinder) {
+		p.heuristicFunc = heuristic
 	}
 }
 
 func WithDirs(dirs []directions.Direction) func(*AStarPathFinder) {
-	return func(svr *AStarPathFinder) {
-		svr.dirs = dirs
+	return func(p *AStarPathFinder) {
+		p.dirs = dirs
 	}
 }
 
 func WithGrid(grid [][]model.Node) func(*AStarPathFinder) {
-	return func(svr *AStarPathFinder) {
-		svr.grid = grid
+	rows, cols := len(grid), len(grid[0])
+
+	pq := collections.NewMinHeap(rows * cols)
+	parents := make([]int, rows*cols)    // i is x, j is y, parents[i*cols+j] is parent of (i, j)
+	visited := make([]bool, rows*cols)   // i is x, j is y, visited[i*cols+j] is whether (i, j) is visited
+	gScore := make([]float64, rows*cols) // i is x, j is y, gScore[i*cols+j] is gScore of (i, j)
+	result := make([]model.PathNode, rows*cols)
+	return func(p *AStarPathFinder) {
+		p.grid = grid
+		p.parents = parents
+		p.visited = visited
+		p.gScore = gScore
+		p.pq = pq
+		p.result = result
 	}
 }
 
 func (a AStarPathFinder) Search(start model.Node, end model.Node) []model.PathNode {
+
 	grid := a.grid
 	rows, cols := len(grid), len(grid[0])
+	parents := a.parents
+	visited := a.visited
+	gScore := a.gScore
+	// reset
+	for i := 0; i < rows*cols; i++ {
+		parents[i] = -1
+		visited[i] = false
+	}
 
-	pq := collections.NewMinHeap(rows * cols)
+	// pq := a.pq
+	pq := a.pq
+	pq.Reset()
 	pq.Push(start, 0)
-	parents := make([]int, rows*cols)    // i is x, j is y, parents[i*cols+j] is parent of (i, j)
-	visited := make([]bool, rows*cols)   // i is x, j is y, visited[i*cols+j] is whether (i, j) is visited
-	gScore := make([]float64, rows*cols) // i is x, j is y, gScore[i*cols+j] is gScore of (i, j)
+
 	for i := range gScore {
 		gScore[i] = math.MaxFloat64
 	}
@@ -65,7 +91,7 @@ func (a AStarPathFinder) Search(start model.Node, end model.Node) []model.PathNo
 		current := pq.Pop()
 		if current == end {
 			// # Reconstruct the shortest path
-			return utils.ReconstructPath(rows, cols, current, start, parents)
+			return utils.ReconstructPath(rows, cols, current, start, parents, a.result)
 		}
 
 		for _, dir := range a.dirs {

@@ -1,6 +1,8 @@
 package collections
 
-import "github.com/b5710546232/go-pathfinder/pathfinder/model"
+import (
+	"github.com/b5710546232/go-pathfinder/pathfinder/model"
+)
 
 type Item struct {
 	value    model.Node
@@ -11,8 +13,8 @@ type MinHeap struct {
 	array []Item
 }
 
-func NewMinHeap(cap int) *MinHeap {
-	return &MinHeap{array: make([]Item, 0, cap)}
+func NewMinHeap(cap int) MinHeap {
+	return MinHeap{array: make([]Item, 0, cap)}
 }
 
 func (pq *MinHeap) Len() int {
@@ -46,6 +48,10 @@ func (pq *MinHeap) heapifyUp(idx int) {
 		pq.array[parentIdx], pq.array[idx] = pq.array[idx], pq.array[parentIdx]
 		idx = parentIdx
 	}
+}
+
+func (pq *MinHeap) Reset() {
+	pq.array = pq.array[:0]
 }
 
 func (pq *MinHeap) heapifyDown(idx int) {

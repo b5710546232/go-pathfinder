@@ -73,11 +73,10 @@ func (a AStarPathFinder) Search(start model.Node, end model.Node) []model.PathNo
 	gScore := a.gScore
 	// reset
 	for i := 0; i < rows*cols; i++ {
-		parents[i] = -1
+		parents[i] = 0
 		visited[i] = false
 	}
 
-	// pq := a.pq
 	pq := a.pq
 	pq.Reset()
 	pq.Push(start, 0)

@@ -6,7 +6,7 @@ import (
 
 type Item struct {
 	value    model.Node
-	priority float64
+	priority int
 }
 
 type MinHeap struct {
@@ -21,7 +21,7 @@ func (pq *MinHeap) Len() int {
 	return len(pq.array)
 }
 
-func (pq *MinHeap) Push(value model.Node, priority float64) {
+func (pq *MinHeap) Push(value model.Node, priority int) {
 	item := Item{value: value, priority: priority}
 	pq.array = append(pq.array, item)
 	pq.heapifyUp(len(pq.array) - 1)

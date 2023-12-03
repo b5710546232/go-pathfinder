@@ -12,6 +12,14 @@ func NewNode(x, y int) Node {
 	return Node{X: x, Y: y, isWalkable: true}
 }
 
+func (n Node) GetX() int {
+	return n.X
+}
+
+func (n Node) GetY() int {
+	return n.Y
+}
+
 // SetWalkable sets whether this node is walkable
 func (n *Node) SetWalkable(f bool) {
 	n.isWalkable = f
@@ -20,6 +28,10 @@ func (n *Node) SetWalkable(f bool) {
 // IsWalkable returns whether this node is walkable
 func (n Node) IsWalkable() bool {
 	return n.isWalkable
+}
+
+func (n Node) Equals(other Node) bool {
+	return n.X == other.X && n.Y == other.Y
 }
 
 // PathNode is a node in the path

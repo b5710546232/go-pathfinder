@@ -11,14 +11,15 @@ import (
 )
 
 type AStarPathFinder struct {
-	dirs      []directions.Direction
-	grid      [][]model.Node
-	parents   []int
-	visited   []bool
-	gScore    []int
-	pq        collections.MinHeap
-	result    []model.PathNode
-	heuristic func(int, int, int, int) int
+	dirs                 []directions.Direction
+	grid                 [][]model.Node
+	parents              []int
+	visited              []bool
+	gScore               []int
+	pq                   collections.MinHeap
+	result               []model.PathNode
+	heuristic            func(int, int, int, int) int
+	preventCuttingCorner bool
 }
 
 func WithHeuristicFunc(heuristic func(int, int, int, int) int) func(*AStarPathFinder) {
@@ -30,9 +31,10 @@ func WithHeuristicFunc(heuristic func(int, int, int, int) int) func(*AStarPathFi
 func NewAStarPathFinder(options ...func(*AStarPathFinder)) *AStarPathFinder {
 	// default value
 	finder := &AStarPathFinder{
-		grid:      [][]model.Node{},
-		dirs:      directions.DIRS_8,
-		heuristic: heuristics.ManhattanDistanceHeuristic,
+		grid:                 [][]model.Node{},
+		dirs:                 directions.DIRS_8,
+		heuristic:            heuristics.ManhattanDistanceHeuristic,
+		preventCuttingCorner: true,
 	}
 	for _, o := range options {
 		o(finder)
@@ -61,6 +63,19 @@ func WithGrid(grid [][]model.Node) func(*AStarPathFinder) {
 		p.gScore = gScore
 		p.pq = pq
 		p.result = result
+	}
+}
+
+func WithAllowCuttingCorner(allowCuttingCorner bool) func(*AStarPathFinder) {
+	return func(p *AStarPathFinder) {
+		// check is there diagonal direction in dirs
+		for _, dir := range p.dirs {
+			// able to set flag
+			if dir[0] != 0 && dir[1] != 0 {
+				p.preventCuttingCorner = !allowCuttingCorner
+				return
+			}
+		}
 	}
 }
 
@@ -106,6 +121,18 @@ func (a AStarPathFinder) Search(start model.Node, end model.Node) []model.PathNo
 			next := grid[nextRow][nextCol]
 			if !next.IsWalkable() {
 				continue
+			}
+			// check if cutting corner is not allowed
+			if a.preventCuttingCorner {
+				// prevent cutting corner
+				if dir[0] != 0 && dir[1] != 0 {
+					if !grid[current.Y][current.X+dir[0]].IsWalkable() {
+						continue
+					}
+					if !grid[current.Y+dir[1]][current.X].IsWalkable() {
+						continue
+					}
+				}
 			}
 			nextIndex := next.Y*cols + next.X
 			if visited[nextIndex] {

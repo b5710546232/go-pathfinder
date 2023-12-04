@@ -2,6 +2,7 @@
 
 ### Let the 🌟 stars guide your path ~
 
+[GoDocs](https://pkg.go.dev/github.com/b5710546232/go-pathfinder)
 
 ---
 

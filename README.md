@@ -2,9 +2,14 @@
 
 ### Let the 🌟 stars guide your path ~
 
-[GoDocs](https://pkg.go.dev/github.com/b5710546232/go-pathfinder)
-
 ---
+
+
+[![PkgGoDev](https://pkg.go.dev/badge/mod/github.com/b5710546232/go-pathfinder)](https://pkg.go.dev/github.com/b5710546232/go-pathfinder)
+
+
+# Overview
+
 
 Path finding library that provides a fast and efficient solution for 2D matrix path finding. It utilizes a pre-allocated memory method for optimized speed and performance.
 

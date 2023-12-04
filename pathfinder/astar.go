@@ -10,6 +10,7 @@ import (
 	"github.com/b5710546232/go-pathfinder/pathfinder/utils"
 )
 
+// AStarPathFinder is a struct which implements PathFinder interface
 type AStarPathFinder struct {
 	dirs                 []directions.Direction
 	grid                 [][]model.Node
@@ -22,12 +23,7 @@ type AStarPathFinder struct {
 	preventCuttingCorner bool
 }
 
-func WithHeuristicFunc(heuristic func(int, int, int, int) int) func(*AStarPathFinder) {
-	return func(p *AStarPathFinder) {
-		p.heuristic = heuristic
-	}
-}
-
+// NewAStarPathFinder is a function which will create a new AStarPathFinder
 func NewAStarPathFinder(options ...func(*AStarPathFinder)) *AStarPathFinder {
 	// default value
 	finder := &AStarPathFinder{
@@ -42,12 +38,21 @@ func NewAStarPathFinder(options ...func(*AStarPathFinder)) *AStarPathFinder {
 	return finder
 }
 
+// WithHeuristicFunc is a function which will set heuristic function of AStarPathFinder
+func WithHeuristicFunc(heuristic func(int, int, int, int) int) func(*AStarPathFinder) {
+	return func(p *AStarPathFinder) {
+		p.heuristic = heuristic
+	}
+}
+
+// WithDirs is a function which will set directions of AStarPathFinder
 func WithDirs(dirs []directions.Direction) func(*AStarPathFinder) {
 	return func(p *AStarPathFinder) {
 		p.dirs = dirs
 	}
 }
 
+// WithGrid is a function which will set grid of AStarPathFinder
 func WithGrid(grid [][]model.Node) func(*AStarPathFinder) {
 	rows, cols := len(grid), len(grid[0])
 
@@ -66,6 +71,7 @@ func WithGrid(grid [][]model.Node) func(*AStarPathFinder) {
 	}
 }
 
+// WithAllowCuttingCorner is a function which will set whether cutting corner is allowed
 func WithAllowCuttingCorner(allowCuttingCorner bool) func(*AStarPathFinder) {
 	return func(p *AStarPathFinder) {
 		// check is there diagonal direction in dirs
